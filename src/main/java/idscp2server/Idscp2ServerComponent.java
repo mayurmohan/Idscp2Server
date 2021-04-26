@@ -21,20 +21,20 @@ import java.util.Map;
 
 import org.apache.camel.CamelContext;
 import org.apache.camel.Endpoint;
-import org.apache.camel.impl.UriEndpointComponent;
+import org.apache.camel.impl.DefaultComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * Represents the component that manages.
  */
-public class Idscp2ServerComponent extends UriEndpointComponent {
+public class Idscp2ServerComponent extends DefaultComponent {
     public Idscp2ServerComponent() {
-        super(Idscp2ServerEndpoint.class);
+        super();
     }
 
     public Idscp2ServerComponent(CamelContext context) {
-        super(context, Idscp2ServerEndpoint.class);
+        super(context);
     }
     private Logger LOG = LoggerFactory.getLogger(Idscp2ServerComponent.class);
 

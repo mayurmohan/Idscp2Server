@@ -1,5 +1,13 @@
 package idscp2server;
 
+import java.nio.file.Paths;
+
+import org.apache.camel.Exchange;
+import org.apache.camel.Processor;
+import org.apache.camel.spi.ExceptionHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import de.fhg.aisec.ids.idscp2.app_layer.AppLayerConnection;
 import de.fhg.aisec.ids.idscp2.default_drivers.daps.aisec_daps.AisecDapsDriver;
 import de.fhg.aisec.ids.idscp2.default_drivers.daps.aisec_daps.AisecDapsDriverConfig;
@@ -9,32 +17,11 @@ import de.fhg.aisec.ids.idscp2.default_drivers.secure_channel.tlsv1_3.NativeTLSD
 import de.fhg.aisec.ids.idscp2.default_drivers.secure_channel.tlsv1_3.NativeTlsConfiguration;
 import de.fhg.aisec.ids.idscp2.idscp_core.api.configuration.AttestationConfig;
 import de.fhg.aisec.ids.idscp2.idscp_core.api.configuration.Idscp2Configuration;
-import de.fhg.aisec.ids.idscp2.idscp_core.api.idscp_connection.Idscp2Connection;
-import de.fhg.aisec.ids.idscp2.idscp_core.api.idscp_connection.Idscp2ConnectionAdapter;
-import de.fhg.aisec.ids.idscp2.idscp_core.api.idscp_connection.Idscp2ConnectionImpl;
-import de.fhg.aisec.ids.idscp2.idscp_core.api.idscp_connection.Idscp2ConnectionListener;
-import de.fhg.aisec.ids.idscp2.idscp_core.api.idscp_connection.Idscp2MessageListener;
 import de.fhg.aisec.ids.idscp2.idscp_core.api.idscp_server.Idscp2Server;
 import de.fhg.aisec.ids.idscp2.idscp_core.api.idscp_server.Idscp2ServerFactory;
 import de.fhg.aisec.ids.idscp2.idscp_core.drivers.SecureChannelDriver;
-import de.fhg.aisec.ids.idscp2.idscp_core.error.Idscp2Exception;
-import de.fhg.aisec.ids.idscp2.idscp_core.error.Idscp2NotConnectedException;
-import de.fhg.aisec.ids.idscp2.idscp_core.error.Idscp2TimeoutException;
-import de.fhg.aisec.ids.idscp2.idscp_core.error.Idscp2WouldBlockException;
 import de.fhg.aisec.ids.idscp2.idscp_core.rat_registry.RatProverDriverRegistry;
 import de.fhg.aisec.ids.idscp2.idscp_core.rat_registry.RatVerifierDriverRegistry;
-
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Paths;
-import java.util.Collection;
-import java.util.concurrent.CompletableFuture;
-
-import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.FrameworkUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -43,24 +30,26 @@ import org.slf4j.LoggerFactory;
 public class IDSServer{
 
     private static Logger LOG = LoggerFactory.getLogger(IDSServer.class);
-
+    public  static String ksFullPath ="";
+    
+    public  static String tsFullPath ="";
 
 	public static void main(String[] args) {
 		
-		startIDSServer();
+		//startIDSServer();
 	}
     
     
-    public static void startIDSServer() {
+    public static void startIDSServer(Exchange exchange,Processor processor,ExceptionHandler handler) {
     	
         try {
         	
             String host = "localhost";
-           // host = "consumer-core";
+            host = "consumer-core";
             int port = 29292;
-            String ksPath = "ssl/consumer-keystore.p12";
+            String ksPath = ksFullPath;
              
-            String tsPath = "ssl/truststore.p12";
+            String tsPath = tsFullPath;
             
             
             // register rat drivers
@@ -111,14 +100,26 @@ public class IDSServer{
                     .build();
 
             SecureChannelDriver<AppLayerConnection, NativeTlsConfiguration> secureChannelDriver = new NativeTLSDriver<>();
-            Idscp2EndpointListenerImpl listImpl = new Idscp2EndpointListenerImpl();
 
-            Idscp2ServerFactory serverFactory = new Idscp2ServerFactory(AppLayerConnection::new,listImpl,serverConfiguration, secureChannelDriver, secureChannelConfig);
-                  
-            Idscp2Server server = serverFactory.listen();
- 
+            Idscp2ServerFactory<AppLayerConnection, NativeTlsConfiguration> serverFactory =
+                    new Idscp2ServerFactory<>(AppLayerConnection::new, appLayerConnection -> {
+                        LOG.debug("New server connection: {}", appLayerConnection);
+                       MessageListener listener = new MessageListener();
+                       listener.setExchange(exchange);
+                       listener.setHandler(handler);
+                       listener.setProcessor(processor);
+                       appLayerConnection.addGenericMessageListener(listener);
+                   
+                    }, serverConfiguration, secureChannelDriver, secureChannelConfig);
+           
+            Idscp2Server<AppLayerConnection> server = serverFactory.listen();
+            
+            System.out.println("IDSCPV2 Server Running status:" +server.isRunning());
+            
+            LOG.warn("IDSCPV2 Server Running status:" +server.isRunning());
+
         } catch (Exception e) {
-        	LOG.error("Failed to send message:" + e.getMessage());
+        	LOG.error("Failed to start IDS Server:" + e.getMessage());
             e.printStackTrace();
         }
     }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ComponentMetadata ComponentId="ctype::Adapter/cname::Idscp2Server/vendor::SAP/version::1.0.0" ComponentName="Idscp2Server" UIElementType="Adapter" IsExtension="false" IsFinal="true" IsPreserves="true" IsDefaultGenerator="true" ComponentDisplayName="Idscp2Server" xmlns:gen="http://www.sap.hci.adk.com/gen" xmlns:bp="http://www.adk.gen/xmlns/blueprint">
-    <Variant VariantName="Sample Component Sender" VariantId="ctype::AdapterVariant/cname::Idscp2Server/vendor::SAP/tp::sap-sample/mp::sap-sample/direction::Sender" MetadataVersion="2.0" gen:RuntimeComponentBaseUri="sap-sample" AttachmentBehavior="Preserve">
+    <Variant VariantName="Sample Component Sender" VariantId="ctype::AdapterVariant/cname::Idscp2Server/vendor::SAP/tp::idscp2server/mp::idscp2server/direction::Sender" MetadataVersion="2.0" gen:RuntimeComponentBaseUri="idscp2server" AttachmentBehavior="Preserve">
         <InputContent Cardinality="1" Scope="outsidepool" MessageCardinality="1" isStreaming="false">
             <Content>
                 <ContentType>Any</ContentType>
@@ -40,60 +40,9 @@
                     <description>Configure Greetings Message</description>
                 </AttributeReference>
             </AttributeGroup>
-            <AttributeGroup id="ScheduledPollConsumer">
-                <Name xsi:type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">Scheduled Poll Consumer</Name>
-                <GuiLabels guid="813cbd00-ea82-47a9-8302-bf16aa6727b9">
-                    <Label language="EN">Scheduled Poll Consumer</Label>
-                    <Label language="DE">Scheduled Poll Consumer</Label>
-                </GuiLabels>
-                <AttributeReference>
-                    <ReferenceName>backoffMultiplier</ReferenceName>
-                    <description>Configure Backoff Multiplier</description>
-                </AttributeReference>
-                <AttributeReference>
-                    <ReferenceName>sendEmptyMessageWhenIdle</ReferenceName>
-                    <description>Configure Send Empty Message When Idle</description>
-                </AttributeReference>
-                <AttributeReference>
-                    <ReferenceName>initialDelay</ReferenceName>
-                    <description>Configure Initial Delay</description>
-                </AttributeReference>
-                <AttributeReference>
-                    <ReferenceName>backoffIdleThreshold</ReferenceName>
-                    <description>Configure Backoff Idle Threshold</description>
-                </AttributeReference>
-                <AttributeReference>
-                    <ReferenceName>useFixedDelay</ReferenceName>
-                    <description>Configure Use Fixed Delay</description>
-                </AttributeReference>
-                <AttributeReference>
-                    <ReferenceName>delay</ReferenceName>
-                    <description>Configure Delay</description>
-                </AttributeReference>
-                <AttributeReference>
-                    <ReferenceName>startScheduler</ReferenceName>
-                    <description>Configure Start Scheduler</description>
-                </AttributeReference>
-                <AttributeReference>
-                    <ReferenceName>runLoggingLevel</ReferenceName>
-                    <description>Configure Run Logging Level</description>
-                </AttributeReference>
-                <AttributeReference>
-                    <ReferenceName>backoffErrorThreshold</ReferenceName>
-                    <description>Configure Backoff Error Threshold</description>
-                </AttributeReference>
-                <AttributeReference>
-                    <ReferenceName>greedy</ReferenceName>
-                    <description>Configure Greedy</description>
-                </AttributeReference>
-                <AttributeReference>
-                    <ReferenceName>timeUnit</ReferenceName>
-                    <description>Configure Time Unit</description>
-                </AttributeReference>
-            </AttributeGroup>
-        </Tab>
+           </Tab>
     </Variant>
-    <Variant VariantName="Sample Component Receiver" VariantId="ctype::AdapterVariant/cname::Idscp2Server/vendor::SAP/tp::sap-sample/mp::sap-sample/direction::Receiver" IsRequestResponse="true" MetadataVersion="2.0" gen:RuntimeComponentBaseUri="sap-sample" AttachmentBehavior="Preserve">
+    <Variant VariantName="Sample Component Receiver" VariantId="ctype::AdapterVariant/cname::Idscp2Server/vendor::SAP/tp::idscp2server/mp::idscp2server/direction::Receiver" IsRequestResponse="true" MetadataVersion="2.0" gen:RuntimeComponentBaseUri="idscp2server" AttachmentBehavior="Preserve">
         <InputContent Cardinality="1" Scope="outsidepool" MessageCardinality="1" isStreaming="false">
             <Content>
                 <ContentType>Any</ContentType>

@@ -23,7 +23,7 @@ import java.net.URISyntaxException;
 import org.apache.camel.Consumer;
 import org.apache.camel.Processor;
 import org.apache.camel.Producer;
-import org.apache.camel.impl.DefaultPollingEndpoint;
+import org.apache.camel.impl.DefaultEndpoint;
 import org.apache.camel.spi.UriEndpoint;
 import org.apache.camel.spi.UriParam;
 import org.slf4j.Logger;
@@ -32,8 +32,8 @@ import org.slf4j.LoggerFactory;
 /**
  * Represents a www.Sample.com Camel endpoint.
  */
-@UriEndpoint(scheme = "sap-sample", syntax = "", title = "")
-public class Idscp2ServerEndpoint extends DefaultPollingEndpoint {
+@UriEndpoint(scheme = "idscp2server", syntax = "", title = "")
+public class Idscp2ServerEndpoint  extends DefaultEndpoint {
     private Idscp2ServerComponent component;
 
     private transient Logger logger = LoggerFactory.getLogger(Idscp2ServerEndpoint.class);
